@@ -37,9 +37,12 @@ Figure (*FigureFuncs[])(void) = {
 struct {
   Texture backgroundTexture;
   Texture blockTexture;
+  Texture pauseTexture;
   Material backgroundMaterial;
   Material blockMaterial;
+  Material pauseMaterial;
   Sprite background;
+  Sprite pauseSprite;
   Sprite fieldSprites[FIELD_HEIGHT][FIELD_WIDTH];
 } tetris_data;
 
@@ -79,29 +82,41 @@ void GenerateRandomFigure() {
 }
 
 void Scenes_Tetris_OnLoad() {
-  srand(time(NULL));
-
   tetris_state.isInitialized = false;
 
+  // Background
   tetris_data.backgroundTexture = Texture_Load("resources/gameFrame.png");
   if (!tetris_data.backgroundTexture.IsOK) return;
 
-  tetris_data.blockTexture = Texture_Load("resources/block.png");
-  if (!tetris_data.blockTexture.IsOK) return;
-
   tetris_data.backgroundMaterial = Material_Create("Background", image_vs, image_fs, &tetris_data.backgroundTexture.Ptr, 1);
   if (!tetris_data.backgroundMaterial.IsOK) return;
-
-  tetris_data.blockMaterial = Material_Create("Block", image_vs, image_fs, &tetris_data.blockTexture.Ptr, 1);
-  if (!tetris_data.blockMaterial.IsOK) return;
 
   tetris_data.background = Sprite_Create(&tetris_data.backgroundMaterial);
   Sprite_SetSize(&tetris_data.background, g_WindowHandler.BaseSize.Width, g_WindowHandler.BaseSize.Height);
   Sprite_SetName(&tetris_data.background, "Background");
   Sprite_SetPivot(&tetris_data.background, 0, 0);
 
-  tetris_state.field = Field_Create(FIELD_WIDTH, FIELD_HEIGHT);
-  GenerateRandomFigure();
+  // Pause icon
+
+  tetris_data.pauseTexture = Texture_Load("resources/pauseIcon.png");
+  if (!tetris_data.pauseTexture.IsOK) return;
+
+  tetris_data.pauseMaterial = Material_Create("Pause", image_vs, image_fs, &tetris_data.pauseTexture.Ptr, 1);
+  if (!tetris_data.pauseMaterial.IsOK) return;
+
+  tetris_data.pauseSprite = Sprite_Create(&tetris_data.pauseMaterial);
+  Sprite_SetSize(&tetris_data.pauseSprite, 56, 56);
+  Sprite_SetName(&tetris_data.pauseSprite, "Pause");
+  Sprite_SetPivot(&tetris_data.pauseSprite, 0, 0);
+  Sprite_SetPosition(&tetris_data.pauseSprite, 600, 195);
+
+  // Blocks
+
+  tetris_data.blockTexture = Texture_Load("resources/block.png");
+  if (!tetris_data.blockTexture.IsOK) return;
+
+  tetris_data.blockMaterial = Material_Create("Block", image_vs, image_fs, &tetris_data.blockTexture.Ptr, 1);
+  if (!tetris_data.blockMaterial.IsOK) return;
 
   for (size_t y = 0; y < FIELD_HEIGHT; y++) {
     for (size_t x = 0; x < FIELD_WIDTH; x++) {
@@ -111,6 +126,13 @@ void Scenes_Tetris_OnLoad() {
       Sprite_SetPosition(&tetris_data.fieldSprites[y][x], FIELD_X + x * BLOCK_SIZE, FIELD_Y + y * BLOCK_SIZE);
     }
   }
+
+  // Prepare scene
+
+  srand(time(NULL));
+
+  tetris_state.field = Field_Create(FIELD_WIDTH, FIELD_HEIGHT);
+  GenerateRandomFigure();
 
   tetris_state.iterInterval = 0.5f;
   tetris_state.iterEndTime = g_Time + tetris_state.iterInterval;
@@ -210,9 +232,7 @@ void Scenes_Tetris_OnTetrisUpdate() {
   }
 }
 
-void Scenes_Tetris_OnUpdate() {
-  if (!tetris_state.isInitialized) return;
-
+void Scenes_Tetris_Render() {
   glClearColor(0, 0, 0, 1);
   glClear(GL_COLOR_BUFFER_BIT);
 
@@ -254,6 +274,16 @@ void Scenes_Tetris_OnUpdate() {
       Sprite_Render(cell, false);
     }
   }
+
+  if (tetris_state.isPaused) {
+    Sprite_Render(&tetris_data.pauseSprite, false);
+  }
+}
+
+void Scenes_Tetris_OnUpdate() {
+  if (!tetris_state.isInitialized) return;
+
+  Scenes_Tetris_Render();
 
   if (!tetris_state.isPaused) {
     Scenes_Tetris_OnIterationUpdate();
