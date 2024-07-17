@@ -7,7 +7,7 @@ CFLAGS=\
 	-pedantic \
 	-I"src" \
 	-I"deps/SDL-main/include" \
-	-I"deps/gl3w/include" \
+	-I"deps/gl3w/build/include" \
 	-I"deps/cglm/include" \
 	-I"deps/stb_image"
 
@@ -52,9 +52,9 @@ $(OBJ_DIR)/shaders/%.o: $(SRC_DIR)/shaders/%.c
 	@mkdir -p $(OBJ_DIR)/shaders
 	$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
 
-objects/gl3w.o: deps/gl3w/src/gl3w.c
+objects/gl3w.o: deps/gl3w/build/src/gl3w.c
 	mkdir -p objects
-	$(CC) -c deps/gl3w/src/gl3w.c ${CFLAGS} -o objects/gl3w.o
+	$(CC) -c deps/gl3w/build/src/gl3w.c ${CFLAGS} -o objects/gl3w.o
 
 # Shader rules
 $(SHADERS_OUT_DIR)/%_fs.h: $(SHADERS_DIR)/%.fs
