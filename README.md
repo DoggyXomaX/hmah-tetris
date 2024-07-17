@@ -20,7 +20,7 @@ This time we are writing tetris :)
   
   ![Curl](https://img.shields.io/badge/Curl-blue?logo=gnu&style=for-the-badge)
 
-* For shaders build tool
+* To build shaders
   
   ![Mono](https://img.shields.io/badge/Mono-blue?logo=dotnet&style=for-the-badge)
 > Current version can't update `src/shaders/<shader>.c`
