@@ -3,3 +3,6 @@ bin
 src/shaders/compiled
 .vscode
 .idea
+
+# stb_image
+deps/stb_image

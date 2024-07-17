@@ -68,7 +68,7 @@ $(SHADERS_OUT_DIR)/%_vs.h: $(SHADERS_DIR)/%.vs
 	$(MINIFIER) $< -o $@
 
 # deps
-deps: cglm gl3w sdl
+deps: cglm gl3w sdl stb_image
 
 cglm:
 	rm -rf deps/cglm/build
@@ -92,6 +92,12 @@ sdl:
 		cmake -DSDL_SHARED=OFF -DSDL_STATIC=ON \
 			-S .. -B . && \
 		cmake --build .
+
+stb_image:
+	rm -rf deps/stb_image
+	mkdir -p deps/stb_image
+	cd deps/stb_image && \
+		curl -o stb_image.h https://raw.githubusercontent.com/nothings/stb/013ac3b/stb_image.h
 
 run:
 	cd bin && ./tetris.bin
