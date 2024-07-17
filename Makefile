@@ -8,12 +8,12 @@ CFLAGS=\
 	-I"src" \
 	-I"deps/cglm/include" \
 	-I"deps/gl3w/build/include" \
-	-I"deps/SDL-main/include" \
+	-I"deps/SDL/include" \
 	-I"deps/stb_image"
 
 LDFLAGS=\
-	-L"deps/SDL-main/build" -lSDL3 \
-	-L"deps/cglm/build" -lcglm -lm
+	-L"deps/cglm/build" -lcglm -lm \
+	-L"deps/SDL/build" -lSDL3
 
 # Sources
 SRC_DIR = src
@@ -68,13 +68,14 @@ $(SHADERS_OUT_DIR)/%_vs.h: $(SHADERS_DIR)/%.vs
 	$(MINIFIER) $< -o $@
 
 # deps
-deps: cglm gl3w
+deps: cglm gl3w sdl
 
 cglm:
 	rm -rf deps/cglm/build
 	mkdir -p deps/cglm/build
 	cd deps/cglm/build && \
-		cmake -DCGLM_SHARED=0 -DCGLM_STATIC=1 -S .. -B . && \
+		cmake -DCGLM_SHARED=OFF -DCGLM_STATIC=ON \
+			-S .. -B . && \
 		cmake --build .
 
 gl3w:
@@ -82,6 +83,14 @@ gl3w:
 	mkdir -p deps/gl3w/build
 	cd deps/gl3w/build && \
 		cmake -S .. -B . && \
+		cmake --build .
+
+sdl:
+	rm -rf deps/SDL/build
+	mkdir -p deps/SDL/build
+	cd deps/SDL/build && \
+		cmake -DSDL_SHARED=OFF -DSDL_STATIC=ON \
+			-S .. -B . && \
 		cmake --build .
 
 run:

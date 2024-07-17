@@ -4,3 +4,6 @@
 [submodule "deps/gl3w"]
 	path = deps/gl3w
 	url = https://github.com/skaslev/gl3w
+[submodule "deps/SDL"]
+	path = deps/SDL
+	url = https://github.com/libsdl-org/SDL
