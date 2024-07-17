@@ -9,12 +9,19 @@ This time we are writing tetris :)
 ## Build dependencies
 
 * To compile C btw
-  ![GCC / CLang](https://img.shields.io/badge/GCC_%2F_CLang-blue?logo=gnu&style=for-the-badge)
+  
+  ![GCC / CLang](https://img.shields.io/badge/GCC_%2F_CLang-blue?logo=gnu&style=for-the-badge
+
 * To make dependencies
+  
   ![CMake ^3.16.0](https://img.shields.io/badge/CMake-%5E3.16.0-green?logo=cmake&style=for-the-badge)
+
 * To download `stb_image.h`
-  ![Curl](https://img.shields.io/badge/Curl-blue?logo=gnu&style=for-the-badge) 
+  
+  ![Curl](https://img.shields.io/badge/Curl-blue?logo=gnu&style=for-the-badge)
+
 * For shaders build tool
+  
   ![Mono](https://img.shields.io/badge/Mono-blue?logo=dotnet&style=for-the-badge)
 > Current version can't update `src/shaders/<shader>.c`
 >
