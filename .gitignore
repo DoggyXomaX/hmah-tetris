@@ -3,6 +3,3 @@ bin
 src/shaders/compiled
 .vscode
 .idea
-
-# gl3w ignore build
-deps/gl3w/build
