@@ -6,12 +6,14 @@ CFLAGS=\
 	-Wextra \
 	-pedantic \
 	-I"src" \
-	-I"deps/SDL-main/include" \
-	-I"deps/gl3w/build/include" \
 	-I"deps/cglm/include" \
+	-I"deps/gl3w/build/include" \
+	-I"deps/SDL-main/include" \
 	-I"deps/stb_image"
 
-LDFLAGS=-L"deps/SDL-main/build" -lSDL3 -lm
+LDFLAGS=\
+	-L"deps/SDL-main/build" -lSDL3 \
+	-L"deps/cglm/build" -lcglm -lm
 
 # Sources
 SRC_DIR = src
@@ -66,9 +68,21 @@ $(SHADERS_OUT_DIR)/%_vs.h: $(SHADERS_DIR)/%.vs
 	$(MINIFIER) $< -o $@
 
 # deps
+deps: cglm gl3w
+
+cglm:
+	rm -rf deps/cglm/build
+	mkdir -p deps/cglm/build
+	cd deps/cglm/build && \
+		cmake -DCGLM_SHARED=0 -DCGLM_STATIC=1 -S .. -B . && \
+		cmake --build .
+
 gl3w:
-	rm -rf deps/gl3w/build && mkdir -p deps/gl3w/build
-	cd deps/gl3w/build && cmake -S .. -B . && cmake --build .
+	rm -rf deps/gl3w/build
+	mkdir -p deps/gl3w/build
+	cd deps/gl3w/build && \
+		cmake -S .. -B . && \
+		cmake --build .
 
 run:
 	cd bin && ./tetris.bin
