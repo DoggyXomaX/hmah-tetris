@@ -65,6 +65,11 @@ $(SHADERS_OUT_DIR)/%_vs.h: $(SHADERS_DIR)/%.vs
 	mkdir -p src/shaders/compiled
 	$(MINIFIER) $< -o $@
 
+# deps
+gl3w:
+	rm -rf deps/gl3w/build && mkdir -p deps/gl3w/build
+	cd deps/gl3w/build && cmake -S .. -B . && cmake --build .
+
 run:
 	cd bin && ./tetris.bin
 
@@ -76,4 +81,4 @@ clean:
 	rm -rf objects/shaders/*.o
 	rm -rf src/shaders/compiled/*.h
 
-.PHONY: all run clean
+.PHONY: all run clean gl3w
