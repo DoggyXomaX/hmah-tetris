@@ -1,0 +1,5 @@
+objects
+bin
+src/shaders/compiled
+.vscode
+.idea
