@@ -10,7 +10,7 @@ This time we are writing tetris :)
 
 * To compile C btw
   
-  ![GCC / CLang](https://img.shields.io/badge/GCC_%2F_CLang-blue?logo=gnu&style=for-the-badge
+  ![GCC / CLang](https://img.shields.io/badge/GCC_%2F_CLang-blue?logo=gnu&style=for-the-badge)
 
 * To make dependencies
   
