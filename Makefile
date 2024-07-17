@@ -110,4 +110,4 @@ clean:
 	rm -rf objects/shaders/*.o
 	rm -rf src/shaders/compiled/*.h
 
-.PHONY: all run clean gl3w
+.PHONY: all run clean cglm gl3w sdl stb_image deps
