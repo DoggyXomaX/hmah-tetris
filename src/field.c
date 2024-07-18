@@ -2,8 +2,6 @@
 
 #include <stdio.h>
 
-#include "assert_null.h"
-
 Field Field_Create(int width, int height) {
   Field field = { .Size = { .Width = width, .Height = height } };
   if (width <= 0 || width > MAX_FIELD_WIDTH) {
@@ -21,7 +19,6 @@ Field Field_Create(int width, int height) {
 }
 
 void Field_Fill(Field* this, uint8_t value) {
-  assertNull(this);
   for (int i = 0; i < this->Size.Height * this->Size.Width; i++) {
     this->Data[i] = value;
   }
