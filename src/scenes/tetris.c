@@ -95,8 +95,8 @@ void GenerateRandomFigure(Figure* target) {
 
   target->Position = newFigure.Position;
   target->Size = newFigure.Size;
-  for (size_t y = 0, i = 0; y < newFigure.Size; y++) {
-    for (size_t x = 0; x < newFigure.Size; x++, i++) {
+  for (int y = 0, i = 0; y < newFigure.Size; y++) {
+    for (int x = 0; x < newFigure.Size; x++, i++) {
       target->Data[i] = newFigure.Data[i];
     }
   }
@@ -108,8 +108,8 @@ void SwapFigures() {
 
   to->Position = from->Position;
   to->Size = from->Size;
-  for (size_t y = 0, i = 0; y < from->Size; y++) {
-    for (size_t x = 0; x < from->Size; x++, i++) {
+  for (int y = 0, i = 0; y < from->Size; y++) {
+    for (int x = 0; x < from->Size; x++, i++) {
       to->Data[i] = from->Data[i];
     }
   }
@@ -168,8 +168,8 @@ void Scenes_Tetris_OnLoad() {
   tetris_data.blockMaterial = Material_Create("Block", image_vs, image_fs, &tetris_data.blockTexture.Ptr, 1);
   if (!tetris_data.blockMaterial.IsOK) return;
 
-  for (size_t y = 0; y < FIELD_HEIGHT; y++) {
-    for (size_t x = 0; x < FIELD_WIDTH; x++) {
+  for (int y = 0; y < FIELD_HEIGHT; y++) {
+    for (int x = 0; x < FIELD_WIDTH; x++) {
       tetris_data.fieldSprites[y][x] = Sprite_Create(&tetris_data.blockMaterial);
       Sprite_SetSize(&tetris_data.fieldSprites[y][x], BLOCK_SIZE, BLOCK_SIZE);
       Sprite_SetPivot(&tetris_data.fieldSprites[y][x], 0, 0);
@@ -179,7 +179,7 @@ void Scenes_Tetris_OnLoad() {
 
   // Next figure sprites
 
-  for (size_t i = 0; i < 16; i++) {
+  for (int i = 0; i < 16; i++) {
     tetris_data.nextFigureSprites[i] = Sprite_Create(&tetris_data.blockMaterial);
     Sprite_SetPivot(&tetris_data.nextFigureSprites[i], 0, 0);
   }
@@ -341,9 +341,10 @@ void Scenes_Tetris_Render() {
 
   // Game field render
 
-  for (size_t y = 0, i = 0; y < FIELD_HEIGHT; y++) {
-    for (size_t x = 0; x < FIELD_WIDTH; x++, i++) {
-      uint8_t c = tetris_state.field.Data[i];
+  const Field* field = &tetris_state.field;
+  for (int y = 0, i = 0; y < FIELD_HEIGHT; y++) {
+    for (int x = 0; x < FIELD_WIDTH; x++, i++) {
+      uint8_t c = field->Data[i];
       if (!c) continue;
 
       Sprite* cell = &tetris_data.fieldSprites[y][x];
@@ -357,19 +358,18 @@ void Scenes_Tetris_Render() {
 
   // Game field falling figure render
 
-  for (int y = 0, i = 0; y < (int)tetris_state.figure.Size; y++) {
-    for (int x = 0; x < (int)tetris_state.figure.Size; x++, i++) {
-      uint8_t c = tetris_state.figure.Data[i];
+  const Figure* figure = &tetris_state.figure;
+  for (int y = 0, i = 0; y < figure->Size; y++) {
+    for (int x = 0; x < figure->Size; x++, i++) {
+      uint8_t c = figure->Data[i];
       if (c == 0) continue;
 
-      int fx = tetris_state.figure.Position.X + x;
-      int fy = tetris_state.figure.Position.Y + y;
-      if (
-        fx < 0 || fx >= (int)tetris_state.field.Size.Width ||
-        fy < 0 || fy >= (int)tetris_state.field.Size.Height
-      ) {
-        continue;
-      }
+      int fx = figure->Position.X + x;
+      int fy = figure->Position.Y + y;
+
+      bool inX = 0 <= fx && fx <= field->Size.Width;
+      bool inY = 0 <= fy && fy <= field->Size.Height;
+      if (!inX || !inY) continue;
 
       Sprite* cell = &tetris_data.fieldSprites[fy][fx];
       cell->Color.R = (c & 4) != 0;
@@ -382,15 +382,15 @@ void Scenes_Tetris_Render() {
 
   // Next figure render
   
-  int figureSize = tetris_state.nextFigure.Size;
-  for (int y = 0, i = 0; y < figureSize; y++) {
-    for (int x = 0; x < figureSize; x++, i++) {
-      uint8_t c = tetris_state.nextFigure.Data[i];
+  const Figure* nextFigure = &tetris_state.nextFigure;
+  for (int y = 0, i = 0; y < nextFigure->Size; y++) {
+    for (int x = 0; x < nextFigure->Size; x++, i++) {
+      uint8_t c = nextFigure->Data[i];
       if (c == 0) continue;
 
       Sprite* cell = &tetris_data.nextFigureSprites[i];
-      float width = NEXT_BLOCK_WIDTH / (float)figureSize;
-      float height = NEXT_BLOCK_HEIGHT / (float)figureSize;
+      float width = NEXT_BLOCK_WIDTH / (float)nextFigure->Size;
+      float height = NEXT_BLOCK_HEIGHT / (float)nextFigure->Size;
       float posX = NEXT_BLOCK_X + x * width;
       float posY = NEXT_BLOCK_Y + y * height;
       Sprite_SetPosition(cell, posX, posY);

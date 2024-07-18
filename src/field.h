@@ -2,7 +2,6 @@
 #define __FIELD_H__
 
 #include <inttypes.h>
-#include <stddef.h>
 #include <stdbool.h>
 
 #include "size.h"
@@ -12,10 +11,10 @@
 
 typedef struct Field_s {
   uint8_t Data[MAX_FIELD_HEIGHT * MAX_FIELD_WIDTH];
-  Sizeu Size;
+  Sizei Size;
 } Field;
 
-Field Field_Create(size_t width, size_t height);
+Field Field_Create(int width, int height);
 void Field_Fill(Field* this, uint8_t value);
 void Field_CheckTetris(const Field* this, bool* isTetris, int positions[4]);
 void Field_CollectEmptyLines(Field* this);

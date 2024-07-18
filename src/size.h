@@ -13,9 +13,4 @@ typedef struct Sizei_s {
   int Height;
 } Sizei;
 
-typedef struct Sizeu_s {
-  size_t Width;
-  size_t Height;
-} Sizeu;
-
 #endif // __SIZE_H__

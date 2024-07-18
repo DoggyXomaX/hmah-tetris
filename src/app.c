@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <SDL3/SDL.h>
 #include <GL/gl3w.h>
+#include <unistd.h>
 
 #include "unused.h"
 #include "window_handler.h"
@@ -95,6 +96,7 @@ int App_Init(int argc, char* argv[]) {
       g_DeltaTime = 1.0f / (1000.0f / delta);
       Update();
     }
+    usleep(1000.0f / 60.0f);
   }
 
   Scenes_Destroy();

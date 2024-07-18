@@ -3,14 +3,13 @@
 
 #include <stdbool.h>
 #include <inttypes.h>
-#include <stddef.h>
 
 #include "vector.h"
 #include "field.h"
 
 typedef struct Figure_s {
   Vector2i Position;
-  size_t Size;
+  int Size;
   uint8_t Data[16];
 } Figure;
 
@@ -28,7 +27,7 @@ void Figure_MoveLeft(Figure* this, const Field* field);
 void Figure_MoveRight(Figure* this, const Field* field);
 void Figure_NextIteration(Figure* this, Field* field, bool* isLost, bool* isPlaced);
 void Figure_SetColor(Figure* this, uint8_t colorIndex);
-void Figure_PlaceOnStart(Figure* this, Field* field);
+void Figure_PlaceOnStart(Figure* this, const Field* field);
 void Figure_Print(const Figure* this);
 
 #endif // __FIGURE_H__
