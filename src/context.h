@@ -1,5 +1,5 @@
-#ifndef __WINDOW_HANDLER_H__
-#define __WINDOW_HANDLER_H__
+#ifndef __CONTEXT_H__
+#define __CONTEXT_H__
 
 #include <stdbool.h>
 #include <SDL3/SDL.h>
@@ -20,4 +20,4 @@ void Context_Swap(void);
 void Context_Destroy(void);
 void Context_OnResize(void);
 
-#endif // __WINDOW_HANDLER_H__
+#endif // __CONTEXT_H__
