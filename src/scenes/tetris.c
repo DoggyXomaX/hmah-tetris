@@ -75,6 +75,10 @@ struct {
 
   float inputEndTime;
   float inputInterval;
+  float slowInputEndTime;
+  float slowInputInterval;
+  bool wasLeft;
+  bool wasRight;
 
   float tetrisEndTime;
   float tetrisInterval;
@@ -196,6 +200,10 @@ void Scenes_Tetris_OnLoad() {
 
   tetris_state.inputInterval = 0.05f;
   tetris_state.inputEndTime = g_Time + tetris_state.inputInterval;
+  tetris_state.slowInputInterval = 0.10f;
+  tetris_state.slowInputEndTime = g_Time + tetris_state.slowInputInterval;
+  tetris_state.wasLeft = false;
+  tetris_state.wasRight = false;
 
   tetris_state.isLost = false;
   tetris_state.isPaused = false;
@@ -254,13 +262,37 @@ void Scenes_Tetris_OnInputUpdate() {
 
   if (tetris_state.isPaused) return;
 
-  if (Input_OnKeyDown(SDLK_UP)) Figure_RotateRight(&tetris_state.figure, &tetris_state.field);
-  if (Input_OnKeyDown(SDLK_LEFT)) Figure_MoveLeft(&tetris_state.figure, &tetris_state.field);
-  if (Input_OnKeyDown(SDLK_RIGHT)) Figure_MoveRight(&tetris_state.figure, &tetris_state.field);
+  if (Input_OnKeyDown(SDLK_UP)) {
+    Figure_RotateRight(&tetris_state.figure, &tetris_state.field);
+  }
+
+  if (Input_OnKeyDown(SDLK_LEFT)) {
+    Figure_MoveLeft(&tetris_state.figure, &tetris_state.field);
+    tetris_state.wasLeft = true;
+  }
+
+  if (Input_OnKeyDown(SDLK_RIGHT)) {
+    Figure_MoveRight(&tetris_state.figure, &tetris_state.field);
+    tetris_state.wasRight = true;
+  }
+
+  if (tetris_state.slowInputEndTime <= g_Time) {
+    tetris_state.slowInputEndTime = g_Time + tetris_state.slowInputInterval;
+    if (tetris_state.wasLeft) {
+      tetris_state.wasLeft = false;
+    } else if (Input_IsKeyPressed(SDLK_LEFT)) {
+      Figure_MoveLeft(&tetris_state.figure, &tetris_state.field);
+    }
+
+    if (tetris_state.wasRight) {
+      tetris_state.wasRight = false;
+    } else if (Input_IsKeyPressed(SDLK_RIGHT)) {
+      Figure_MoveRight(&tetris_state.figure, &tetris_state.field);
+    }
+  }
 
   if (tetris_state.inputEndTime <= g_Time) {
     tetris_state.inputEndTime = g_Time + tetris_state.inputInterval;
-
     if (Input_IsKeyPressed(SDLK_DOWN)) {
       Scenes_Tetris_UpdateIteration();
     }
