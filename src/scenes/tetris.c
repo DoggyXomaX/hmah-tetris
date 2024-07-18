@@ -36,14 +36,20 @@ Figure (*FigureFuncs[])(void) = {
 
 struct {
   Texture backgroundTexture;
-  Texture blockTexture;
-  Texture pauseTexture;
   Material backgroundMaterial;
-  Material blockMaterial;
-  Material pauseMaterial;
   Sprite background;
-  Sprite pauseSprite;
+
+  Texture backgroundLoseTexture;
+  Material backgroundLoseMaterial;
+  Sprite backgroundLose;
+
+  Texture blockTexture;
+  Material blockMaterial;
   Sprite fieldSprites[FIELD_HEIGHT][FIELD_WIDTH];
+  
+  Texture pauseTexture;
+  Material pauseMaterial;
+  Sprite pauseSprite;
 } tetris_data;
 
 struct {
@@ -85,6 +91,7 @@ void Scenes_Tetris_OnLoad() {
   tetris_state.isInitialized = false;
 
   // Background
+
   tetris_data.backgroundTexture = Texture_Load("resources/gameFrame.png");
   if (!tetris_data.backgroundTexture.IsOK) return;
 
@@ -95,6 +102,19 @@ void Scenes_Tetris_OnLoad() {
   Sprite_SetSize(&tetris_data.background, g_WindowHandler.BaseSize.Width, g_WindowHandler.BaseSize.Height);
   Sprite_SetName(&tetris_data.background, "Background");
   Sprite_SetPivot(&tetris_data.background, 0, 0);
+
+  // Background lose
+
+  tetris_data.backgroundLoseTexture = Texture_Load("resources/loseFrame.png");
+  if (!tetris_data.backgroundLoseTexture.IsOK) return;
+
+  tetris_data.backgroundLoseMaterial = Material_Create("Lose background", image_vs, image_fs, &tetris_data.backgroundLoseTexture.Ptr, 1);
+  if (!tetris_data.backgroundLoseMaterial.IsOK) return;
+
+  tetris_data.backgroundLose = Sprite_Create(&tetris_data.backgroundLoseMaterial);
+  Sprite_SetSize(&tetris_data.backgroundLose, g_WindowHandler.BaseSize.Width, g_WindowHandler.BaseSize.Height);
+  Sprite_SetName(&tetris_data.backgroundLose, "Lose background");
+  Sprite_SetPivot(&tetris_data.backgroundLose, 0, 0);
 
   // Pause icon
 
@@ -184,7 +204,7 @@ void Scenes_Tetris_OnIterationUpdate() {
 void Scenes_Tetris_OnInputUpdate() {
   if (tetris_state.isTetris) return;
   if (tetris_state.isLost) {
-    if (Input_OnKeyDown(SDLK_ESCAPE)) {
+    if (Input_OnKeyDown(SDLK_ESCAPE) || Input_OnMouseDown(MB_LEFT)) {
       Scene_Load("Tetris");
     }
     return;
@@ -236,7 +256,10 @@ void Scenes_Tetris_Render() {
   glClearColor(0.2706f, 0.3216f, 0.3961f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  Sprite_Render(&tetris_data.background, true);
+  bool isLose = tetris_state.isLost;
+
+  Sprite* background = isLose ? &tetris_data.backgroundLose : &tetris_data.background;
+  Sprite_Render(background, true);
 
   for (size_t y = 0, i = 0; y < FIELD_HEIGHT; y++) {
     for (size_t x = 0; x < FIELD_WIDTH; x++, i++) {
@@ -244,9 +267,9 @@ void Scenes_Tetris_Render() {
       if (!c) continue;
 
       Sprite* cell = &tetris_data.fieldSprites[y][x];
-      cell->Color.R = (c & 4) != 0;
-      cell->Color.G = (c & 2) != 0;
-      cell->Color.B = (c & 1) != 0;
+      cell->Color.R = ((c & 4) >> 2) != isLose;
+      cell->Color.G = ((c & 2) >> 1) != isLose;
+      cell->Color.B = (c & 1) != isLose;
 
       Sprite_Render(cell, false);
     }
