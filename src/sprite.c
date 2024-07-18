@@ -32,8 +32,8 @@ void Sprite_Render(Sprite* this, bool forceMaterialUpdate) {
     Material_BindTextures(this->Material);
   }
 
-  Material_SetVector2(this->Material, "uResolution", g_WindowHandler.Size.Width, g_WindowHandler.Size.Height);
-  Material_SetVector2(this->Material, "uBaseResolution", g_WindowHandler.BaseSize.Width, g_WindowHandler.BaseSize.Height);
+  Material_SetVector2(this->Material, "uResolution", g_Context.Size.Width, g_Context.Size.Height);
+  Material_SetVector2(this->Material, "uBaseResolution", g_Context.BaseSize.Width, g_Context.BaseSize.Height);
   Material_SetVector2(this->Material, "uSize", this->Size.Width, this->Size.Height);
   Material_SetVector4(this->Material, "uColor", this->Color.R, this->Color.G, this->Color.B, this->Color.A);
 

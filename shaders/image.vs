@@ -7,7 +7,7 @@ layout (location=1) in vec2 iTexCoord; // Should be (0, 0) (1, 0) (1, 1) (0, 1)
 
 out vec2 vTexCoord;
 
-// WindowHandler resolution
+// Context resolution
 uniform highp vec2 uResolution;
 uniform highp vec2 uBaseResolution;
 

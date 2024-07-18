@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #include "vector.h"
-#include "window_handler.h"
+#include "context.h"
 
 #define KEYS_COUNT 0x2000
 
@@ -88,10 +88,10 @@ Vector2f Input_GetMousePosition() {
 }
 
 Vector2f Input_GetBaseMousePosition() {
-  float width = g_WindowHandler.Size.Width;
-  float height = g_WindowHandler.Size.Height;
-  float baseWidth = g_WindowHandler.BaseSize.Width;
-  float baseHeight = g_WindowHandler.BaseSize.Height;
+  float width = g_Context.Size.Width;
+  float height = g_Context.Size.Height;
+  float baseWidth = g_Context.BaseSize.Width;
+  float baseHeight = g_Context.BaseSize.Height;
 
   float scale = baseHeight / height;
   float scaledBaseWidth = baseWidth * (height / baseHeight);

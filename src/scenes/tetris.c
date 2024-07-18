@@ -129,7 +129,7 @@ void Scenes_Tetris_OnLoad() {
   if (!tetris_data.backgroundMaterial.IsOK) return;
 
   tetris_data.background = Sprite_Create(&tetris_data.backgroundMaterial);
-  Sprite_SetSize(&tetris_data.background, g_WindowHandler.BaseSize.Width, g_WindowHandler.BaseSize.Height);
+  Sprite_SetSize(&tetris_data.background, g_Context.BaseSize.Width, g_Context.BaseSize.Height);
   Sprite_SetName(&tetris_data.background, "Background");
   Sprite_SetPivot(&tetris_data.background, 0, 0);
 
@@ -142,7 +142,7 @@ void Scenes_Tetris_OnLoad() {
   if (!tetris_data.backgroundLoseMaterial.IsOK) return;
 
   tetris_data.backgroundLose = Sprite_Create(&tetris_data.backgroundLoseMaterial);
-  Sprite_SetSize(&tetris_data.backgroundLose, g_WindowHandler.BaseSize.Width, g_WindowHandler.BaseSize.Height);
+  Sprite_SetSize(&tetris_data.backgroundLose, g_Context.BaseSize.Width, g_Context.BaseSize.Height);
   Sprite_SetName(&tetris_data.backgroundLose, "Lose background");
   Sprite_SetPivot(&tetris_data.backgroundLose, 0, 0);
 
@@ -422,7 +422,7 @@ void Scenes_Tetris_OnUpdate() {
 
   Scenes_Tetris_OnInputUpdate();
 
-  WindowHandler_Swap();
+  Context_Swap();
 }
 
 void Scenes_Tetris_OnDestroy() {

@@ -5,7 +5,7 @@
 
 #include "texture.h"
 #include "material.h"
-#include "window_handler.h"
+#include "context.h"
 #include "drawable.h"
 #include "sprite.h"
 #include "curve.h"
@@ -82,8 +82,8 @@ void Scenes_Intro_OnUpdate() {
 
   float v = AnimationCurve_GetValue(&intro_data.curve, intro_state.curveValue);
   Material_SetVector4(&intro_data.material, "uColor", v, v, v, 1.0f);
-  Material_SetVector2(&intro_data.material, "uResolution",  g_WindowHandler.Size.Width, g_WindowHandler.Size.Height);
-  Material_SetVector2(&intro_data.material, "uBaseResolution", g_WindowHandler.BaseSize.Width, g_WindowHandler.BaseSize.Height);
+  Material_SetVector2(&intro_data.material, "uResolution",  g_Context.Size.Width, g_Context.Size.Height);
+  Material_SetVector2(&intro_data.material, "uBaseResolution", g_Context.BaseSize.Width, g_Context.BaseSize.Height);
 
   glBindVertexArray(intro_data.mesh);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -96,7 +96,7 @@ void Scenes_Intro_OnUpdate() {
     intro_state.stage++;
   }
 
-  WindowHandler_Swap();
+  Context_Swap();
 }
 
 void Scenes_Intro_OnDestroy() {

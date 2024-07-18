@@ -8,7 +8,7 @@
 #include "drawable.h"
 #include "material.h"
 #include "transform.h"
-#include "window_handler.h"
+#include "context.h"
 #include "rgba.h"
 #include "size.h"
 

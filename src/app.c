@@ -3,11 +3,10 @@
 #include <inttypes.h>
 #include <stddef.h>
 #include <SDL3/SDL.h>
-#include <GL/gl3w.h>
 #include <unistd.h>
 
 #include "unused.h"
-#include "window_handler.h"
+#include "context.h"
 #include "input.h"
 #include "cursor.h"
 #include "timing.h"
@@ -53,8 +52,7 @@ void UpdateSDLEvents() {
         break;
       }
       case SDL_EVENT_WINDOW_RESIZED: {
-        WindowHandler_OnResize();
-        glViewport(0, 0, g_WindowHandler.Size.Width, g_WindowHandler.Size.Height);
+        Context_OnResize();
         break;
       }
     }
@@ -70,37 +68,27 @@ int App_Init(int argc, char* argv[]) {
   UNUSED(argc);
   UNUSED(argv);
 
-  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-
-  WindowHandler_Create(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEADER);
-  if (!g_WindowHandler.IsOK) return 1;
-
-  SDL_GL_CreateContext(g_WindowHandler.Window);
-  gl3wInit();
+  Context_Create(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEADER);
+  if (!g_Context.IsOK) return 1;
 
   Input_Init();
   Cursor_Init();
 
   Scenes_CreateAll();
   Scenes_LoadFirst();
-  g_TargetFPS = 60.0f;
 
-  uint64_t prevTime;
+  g_TargetFPS = 60.0f;
+  g_DeltaTime = 1.0f / (1000.0f / g_TargetFPS);
   g_IsRunning = true;
+
   while (g_IsRunning) {
-    uint64_t currentTime = SDL_GetTicks();
-    uint64_t delta = currentTime - prevTime;
-    g_Time = currentTime / 1000.0f;
-    if (delta > 1000.0 / g_TargetFPS) {
-      prevTime = currentTime;
-      g_DeltaTime = 1.0f / (1000.0f / delta);
-      Update();
-    }
-    usleep(1000.0f / 60.0f);
+    g_Time = SDL_GetTicks() / 1000.0f;
+    Update();
+    usleep(1000.0f / g_TargetFPS);
   }
 
   Scenes_Destroy();
-  WindowHandler_Destroy();
+  Context_Destroy();
 
   return 0;
 }

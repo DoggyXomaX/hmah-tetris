@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <GL/gl3w.h>
 
-#include "window_handler.h"
+#include "context.h"
 #include "app.h"
 #include "texture.h"
 #include "material.h"
@@ -58,7 +58,7 @@ void Scenes_Menu_OnLoad() {
   Sprite_InitSpriteMesh();
 
   menu_data.menuSprite = Sprite_Create(&menu_data.menuMaterial);
-  Sprite_SetSize(&menu_data.menuSprite, g_WindowHandler.BaseSize.Width, g_WindowHandler.BaseSize.Height);
+  Sprite_SetSize(&menu_data.menuSprite, g_Context.BaseSize.Width, g_Context.BaseSize.Height);
   Sprite_SetName(&menu_data.menuSprite, "Menu");
   Sprite_SetPivot(&menu_data.menuSprite, 0, 0);
 
@@ -138,7 +138,7 @@ void Scenes_Menu_OnUpdate() {
   UpdateSpriteMouseBehavior(&menu_data.exitButton, OnExitButtonClick);
   Sprite_Render(&menu_data.exitButton, true);
 
-  WindowHandler_Swap();
+  Context_Swap();
 }
 
 void Scenes_Menu_OnDestroy() {
