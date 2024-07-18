@@ -9,6 +9,7 @@ out vec2 vTexCoord;
 
 // WindowHandler resolution
 uniform highp vec2 uResolution;
+uniform highp vec2 uBaseResolution;
 
 // Sprite transform
 uniform highp vec2 uPosition;
@@ -32,10 +33,10 @@ void main() {
   vTexCoord = iTexCoord;
 
   vec2 pos = iPos;
-  float aspect = uResolution.x / uResolution.y;
+  float aspect = uBaseResolution.x / uBaseResolution.y;
   vec2 size = vec2(
-    uSize.x / uResolution.x * aspect,
-    uSize.y / uResolution.y * 1
+    uSize.x / uBaseResolution.x * aspect,
+    uSize.y / uBaseResolution.y * 1
   ) * uScale;
 
   pos -= uPivot;
@@ -44,8 +45,8 @@ void main() {
   pos += uPivot * size; 
 
   pos += vec2(
-    uPosition.x / uResolution.x * aspect,
-    uPosition.y / uResolution.y
+    uPosition.x / uBaseResolution.x * aspect,
+    uPosition.y / uBaseResolution.y
   );
 
   pos.y = -pos.y;
@@ -54,6 +55,9 @@ void main() {
   pos -= vec2(1.0 * aspect, -1.0);
 
   pos.x /= aspect;
+
+  pos *= uBaseResolution / uResolution;
+  pos *= uResolution.y / uBaseResolution.y;
 
   gl_Position = vec4(pos, 0.0, 1.0);
 }

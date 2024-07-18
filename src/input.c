@@ -88,12 +88,18 @@ Vector2f Input_GetMousePosition() {
 }
 
 Vector2f Input_GetBaseMousePosition() {
-  float scaleX = g_WindowHandler.BaseSize.Width / g_WindowHandler.Size.Width;
-  float scaleY = g_WindowHandler.BaseSize.Height / g_WindowHandler.Size.Height;
+  float width = g_WindowHandler.Size.Width;
+  float height = g_WindowHandler.Size.Height;
+  float baseWidth = g_WindowHandler.BaseSize.Width;
+  float baseHeight = g_WindowHandler.BaseSize.Height;
+
+  float scale = baseHeight / height;
+  float scaledBaseWidth = baseWidth * (height / baseHeight);
+  float offsetX = (width - scaledBaseWidth) / 2.0f;
 
   Vector2f basePosition = {
-    .X = g_MousePosition.X * scaleX,
-    .Y = g_MousePosition.Y * scaleY,
+    .X = (g_MousePosition.X - offsetX) * scale,
+    .Y = g_MousePosition.Y * scale,
   };
 
   return basePosition;

@@ -125,7 +125,7 @@ void UpdateSpriteMouseBehavior(Sprite* target, void(*onClick)(void)) {
 void Scenes_Menu_OnUpdate() {
   if (!menu_state.isInitialized) return;
 
-  glClearColor(1.0f, 0.0f, 1.0, 1.0f);
+  glClearColor(0.2706f, 0.3216f, 0.3961f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
   Sprite_Render(&menu_data.menuSprite, true);

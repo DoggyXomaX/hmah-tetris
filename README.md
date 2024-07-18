@@ -23,11 +23,6 @@ This time we are writing tetris :)
 * To build shaders
   
   ![Mono](https://img.shields.io/badge/Mono-blue?logo=dotnet&style=for-the-badge)
-> Current version can't update `src/shaders/<shader>.c`
->
-> If you want to update them, do it manually by copying compiled `src/shaders/compiled/<shader>_vs.h` and `src/shaders/compiled/<shader>_fs.h` into `src/shaders/<shader>.c`
->
-> Why? Because the symbols from the headers intersect when linking different `*.o` objects
 
 ## Build
 

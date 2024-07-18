@@ -82,6 +82,8 @@ void Scenes_Intro_OnUpdate() {
 
   float v = AnimationCurve_GetValue(&intro_data.curve, intro_state.curveValue);
   Material_SetVector4(&intro_data.material, "uColor", v, v, v, 1.0f);
+  Material_SetVector2(&intro_data.material, "uResolution",  g_WindowHandler.Size.Width, g_WindowHandler.Size.Height);
+  Material_SetVector2(&intro_data.material, "uBaseResolution", g_WindowHandler.BaseSize.Width, g_WindowHandler.BaseSize.Height);
 
   glBindVertexArray(intro_data.mesh);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

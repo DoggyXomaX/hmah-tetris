@@ -36,9 +36,4 @@ void WindowHandler_Destroy() {
 
 void WindowHandler_OnResize() {
   SDL_GetWindowSizeInPixels(g_WindowHandler.Window, &g_WindowHandler.Size.Width, &g_WindowHandler.Size.Height);
-
-  float aspect = g_WindowHandler.BaseSize.Height / g_WindowHandler.BaseSize.Width;
-  g_WindowHandler.Size.Height = g_WindowHandler.Size.Width * aspect;
-
-  SDL_SetWindowSize(g_WindowHandler.Window, g_WindowHandler.Size.Width, g_WindowHandler.Size.Height);
 }

@@ -233,7 +233,7 @@ void Scenes_Tetris_OnTetrisUpdate() {
 }
 
 void Scenes_Tetris_Render() {
-  glClearColor(0, 0, 0, 1);
+  glClearColor(0.2706f, 0.3216f, 0.3961f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
   Sprite_Render(&tetris_data.background, true);
