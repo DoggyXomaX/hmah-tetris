@@ -14,13 +14,13 @@ typedef struct Figure_s {
   uint8_t Data[16];
 } Figure;
 
-Figure Figure_Create_2x2();
-Figure Figure_Create_3x3_1();
-Figure Figure_Create_3x3_2();
-Figure Figure_Create_3x3_3();
-Figure Figure_Create_3x3_4();
-Figure Figure_Create_3x3_5();
-Figure Figure_Create_4x4();
+Figure Figure_Create_Box();
+Figure Figure_Create_SLeft();
+Figure Figure_Create_SRight();
+Figure Figure_Create_TBlock();
+Figure Figure_Create_LLeft();
+Figure Figure_Create_LRight();
+Figure Figure_Create_Tetris();
 
 void Figure_RotateLeft(Figure* this, const Field* field);
 void Figure_RotateRight(Figure* this, const Field* field);

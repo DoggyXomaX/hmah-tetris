@@ -6,88 +6,54 @@
 #include <stdlib.h>
 #include <time.h>
 
-Figure Figure_Create_2x2() {
-  return (Figure){ 
-    .Position = { 0, 0 },
-    .Size = 2,
-    .Data = {
-      1, 1,
-      1, 1,
-    },
-  };
+const uint8_t figureBox[] = { 1, 1, 1, 1 };
+const uint8_t figureSLeft[] = { 0, 1, 0, 1, 1, 0, 1, 0, 0 };
+const uint8_t figureSRight[] = { 0, 1, 0, 0, 1, 1, 0, 0, 1 };
+const uint8_t figureTBlock[] = { 1, 0, 0, 1, 1, 0, 1, 0, 0 };
+const uint8_t figureLLeft[] = { 0, 1, 0, 0, 1, 0, 1, 1, 0 };
+const uint8_t figureLRight[] = { 0, 1, 0, 0, 1, 0, 0, 1, 1 };
+const uint8_t figureTetris[] = { 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0 };
+
+Figure Figure_Create_Box() {
+  Figure new = { .Position = { 0, 0 }, .Size = 2 };
+  memcpy(&new.Data, &figureBox, 4);
+  return new;
 }
 
-Figure Figure_Create_3x3_1() {
-  return (Figure){ 
-    .Position = { 0, 0 },
-    .Size = 3,
-    .Data = {
-      0, 1, 0,
-      1, 1, 0,
-      1, 0, 0,
-    },
-  };
+Figure Figure_Create_SLeft() {
+  Figure new = { .Position = { 0, 0 }, .Size = 3 };
+  memcpy(&new.Data, &figureSLeft, 9);
+  return new;
 }
 
-Figure Figure_Create_3x3_2() {
-  return (Figure){ 
-    .Position = { 0, 0 },
-    .Size = 3,
-    .Data = {
-      0, 1, 0,
-      0, 1, 1,
-      0, 0, 1,
-    },
-  };
+Figure Figure_Create_SRight() {
+  Figure new = { .Position = { 0, 0 }, .Size = 3 };
+  memcpy(&new.Data, &figureSRight, 9);
+  return new;
 }
 
-Figure Figure_Create_3x3_3() {
-  return (Figure){ 
-    .Position = { 0, 0 },
-    .Size = 3,
-    .Data = {
-      1, 0, 0,
-      1, 1, 0,
-      1, 0, 0,
-    },
-  };
+Figure Figure_Create_TBlock() {
+  Figure new = { .Position = { 0, 0 }, .Size = 3 };
+  memcpy(&new.Data, &figureTBlock, 9);
+  return new;
 }
 
-Figure Figure_Create_3x3_4() {
-  return (Figure){
-    .Position = { 0, 0 },
-    .Size = 3,
-    .Data = {
-      0, 1, 0,
-      0, 1, 0,
-      1, 1, 0,
-    },
-  };
+Figure Figure_Create_LLeft() {
+  Figure new = { .Position = { 0, 0 }, .Size = 3 };
+  memcpy(&new.Data, &figureLLeft, 9);
+  return new;
 }
 
-Figure Figure_Create_3x3_5() {
-  return (Figure){
-    .Position = { 0, 0 },
-    .Size = 3,
-    .Data = {
-      0, 1, 0,
-      0, 1, 0,
-      0, 1, 1,
-    },
-  };
+Figure Figure_Create_LRight() {
+  Figure new = { .Position = { 0, 0 }, .Size = 3 };
+  memcpy(&new.Data, &figureLRight, 9);
+  return new;
 }
 
-Figure Figure_Create_4x4() {
-  return (Figure){
-    .Position = { 0, 0 },
-    .Size = 4,
-    .Data = {
-      0, 1, 0, 0,
-      0, 1, 0, 0,
-      0, 1, 0, 0,
-      0, 1, 0, 0,
-    },
-  };
+Figure Figure_Create_Tetris() {
+  Figure new = { .Position = { 0, 0 }, .Size = 4 };
+  memcpy(&new.Data, &figureTetris, 16);
+  return new;
 }
 
 void Figure_ApplyNewMatrix(Figure* this, const Field* field, uint8_t newMat[16]) {

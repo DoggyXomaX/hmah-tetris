@@ -24,14 +24,19 @@
 #define FIELD_Y 50
 #define BLOCK_SIZE 25
 
+#define NEXT_BLOCK_X 600
+#define NEXT_BLOCK_Y 75
+#define NEXT_BLOCK_WIDTH 100
+#define NEXT_BLOCK_HEIGHT 100
+
 Figure (*FigureFuncs[])(void) = {
-  Figure_Create_2x2,
-  Figure_Create_3x3_1,
-  Figure_Create_3x3_2,
-  Figure_Create_3x3_3,
-  Figure_Create_3x3_4,
-  Figure_Create_3x3_5,
-  Figure_Create_4x4,
+  Figure_Create_Box,
+  Figure_Create_SLeft,
+  Figure_Create_SRight,
+  Figure_Create_TBlock,
+  Figure_Create_LLeft,
+  Figure_Create_LRight,
+  Figure_Create_Tetris,
 };
 
 struct {
@@ -50,6 +55,8 @@ struct {
   Texture pauseTexture;
   Material pauseMaterial;
   Sprite pauseSprite;
+
+  Sprite nextFigureSprites[16];
 } tetris_data;
 
 struct {
@@ -77,14 +84,33 @@ struct {
   Figure nextFigure;
 } tetris_state;
 
-void GenerateRandomFigure() {
-  // TODO: show next figure
-
+void GenerateRandomFigure(Figure* target) {
   int funcsCount = sizeof(FigureFuncs) / sizeof(FigureFuncs[0]);
   int funcIndex = rand() % funcsCount;
-  tetris_state.figure = FigureFuncs[funcIndex]();
+  Figure newFigure = FigureFuncs[funcIndex]();
 
-  Figure_PlaceOnStart(&tetris_state.figure, &tetris_state.field);
+  target->Position = newFigure.Position;
+  target->Size = newFigure.Size;
+  for (size_t y = 0, i = 0; y < newFigure.Size; y++) {
+    for (size_t x = 0; x < newFigure.Size; x++, i++) {
+      target->Data[i] = newFigure.Data[i];
+    }
+  }
+}
+
+void SwapFigures() {
+  Figure* from = &tetris_state.nextFigure;
+  Figure* to = &tetris_state.figure;
+
+  to->Position = from->Position;
+  to->Size = from->Size;
+  for (size_t y = 0, i = 0; y < from->Size; y++) {
+    for (size_t x = 0; x < from->Size; x++, i++) {
+      to->Data[i] = from->Data[i];
+    }
+  }
+
+  Figure_PlaceOnStart(to, &tetris_state.field);
 }
 
 void Scenes_Tetris_OnLoad() {
@@ -147,12 +173,23 @@ void Scenes_Tetris_OnLoad() {
     }
   }
 
+  // Next figure sprites
+
+  for (size_t i = 0; i < 16; i++) {
+    tetris_data.nextFigureSprites[i] = Sprite_Create(&tetris_data.blockMaterial);
+    Sprite_SetPivot(&tetris_data.nextFigureSprites[i], 0, 0);
+  }
+
   // Prepare scene
 
   srand(time(NULL));
 
   tetris_state.field = Field_Create(FIELD_WIDTH, FIELD_HEIGHT);
-  GenerateRandomFigure();
+  
+  // Initial figure create
+  GenerateRandomFigure(&tetris_state.nextFigure);
+  SwapFigures();
+  GenerateRandomFigure(&tetris_state.nextFigure);
 
   tetris_state.iterInterval = 0.5f;
   tetris_state.iterEndTime = g_Time + tetris_state.iterInterval;
@@ -187,7 +224,8 @@ void Scenes_Tetris_UpdateIteration() {
       tetris_state.tetrisEndTime = g_Time + tetris_state.tetrisInterval;
     }
 
-    GenerateRandomFigure();
+    SwapFigures();
+    GenerateRandomFigure(&tetris_state.nextFigure);
   }
 }
 
@@ -258,8 +296,12 @@ void Scenes_Tetris_Render() {
 
   bool isLose = tetris_state.isLost;
 
+  // Background render
+
   Sprite* background = isLose ? &tetris_data.backgroundLose : &tetris_data.background;
   Sprite_Render(background, true);
+
+  // Game field render
 
   for (size_t y = 0, i = 0; y < FIELD_HEIGHT; y++) {
     for (size_t x = 0; x < FIELD_WIDTH; x++, i++) {
@@ -274,6 +316,8 @@ void Scenes_Tetris_Render() {
       Sprite_Render(cell, false);
     }
   }
+
+  // Game field falling figure render
 
   for (int y = 0, i = 0; y < (int)tetris_state.figure.Size; y++) {
     for (int x = 0; x < (int)tetris_state.figure.Size; x++, i++) {
@@ -293,6 +337,26 @@ void Scenes_Tetris_Render() {
       cell->Color.R = (c & 4) != 0;
       cell->Color.G = (c & 2) != 0;
       cell->Color.B = (c & 1) != 0;
+
+      Sprite_Render(cell, false);
+    }
+  }
+
+  // Next figure render
+  
+  int figureSize = tetris_state.nextFigure.Size;
+  for (int y = 0, i = 0; y < figureSize; y++) {
+    for (int x = 0; x < figureSize; x++, i++) {
+      uint8_t c = tetris_state.nextFigure.Data[i];
+      if (c == 0) continue;
+
+      Sprite* cell = &tetris_data.nextFigureSprites[i];
+      float width = NEXT_BLOCK_WIDTH / (float)figureSize;
+      float height = NEXT_BLOCK_HEIGHT / (float)figureSize;
+      float posX = NEXT_BLOCK_X + x * width;
+      float posY = NEXT_BLOCK_Y + y * height;
+      Sprite_SetPosition(cell, posX, posY);
+      Sprite_SetSize(cell, width, height);
 
       Sprite_Render(cell, false);
     }
