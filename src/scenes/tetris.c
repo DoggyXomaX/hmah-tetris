@@ -291,10 +291,16 @@ void Scenes_Tetris_OnTetrisUpdate() {
 }
 
 void Scenes_Tetris_Render() {
-  glClearColor(0.2706f, 0.3216f, 0.3961f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
-
   bool isLose = tetris_state.isLost;
+
+  RGBA color = { 0.2706f, 0.3216f, 0.3961f, 1.0f };
+  if (isLose) {
+    color.R = 1.0f - color.R;
+    color.G = 1.0f - color.G;
+    color.B = 1.0f - color.B;
+  }
+  glClearColor(color.R, color.G, color.B, color.A);
+  glClear(GL_COLOR_BUFFER_BIT);
 
   // Background render
 
@@ -357,6 +363,11 @@ void Scenes_Tetris_Render() {
       float posY = NEXT_BLOCK_Y + y * height;
       Sprite_SetPosition(cell, posX, posY);
       Sprite_SetSize(cell, width, height);
+      if (isLose) {
+        cell->Color.R = 0.0f;
+        cell->Color.G = 0.0f;
+        cell->Color.B = 0.0f;
+      }
 
       Sprite_Render(cell, false);
     }
