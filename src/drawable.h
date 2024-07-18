@@ -17,4 +17,6 @@ Drawable Drawable_Create(
   const GLuint* indices, size_t indicesCount
 );
 
+void Drawable_Destroy(Drawable* this);
+
 #endif // __DRAWABLE_H__

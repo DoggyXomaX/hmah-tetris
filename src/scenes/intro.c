@@ -29,7 +29,7 @@ const char* IntroPaths[] = {
 struct {
   Texture textures[INTRO_PATHS_COUNT];
   Material material;
-  GLuint mesh;
+  Drawable mesh;
   AnimationCurve curve;
   float curveDuration;
 } intro_data;
@@ -53,7 +53,7 @@ void Scenes_Intro_OnLoad() {
     (const GLfloat[]){ -1, 1, 1, 1, 1, -1, -1, -1 }, 4,
     (const GLfloat[]){ 0, 0, 1, 0, 1, 1, 0, 1 }, 4,
     (const GLuint[]){ 0, 1, 2, 0, 2, 3 }, 6
-  ).VAO;
+  );
   intro_data.curve = AnimationCurve_CreateLinearFade(0.2f, UNFADE_DURATION, STAY_DURATION, FADE_DURATION, 0.2f);
   intro_data.curveDuration = AnimationCurve_GetMaxTime(&intro_data.curve);
 
@@ -85,7 +85,7 @@ void Scenes_Intro_OnUpdate() {
   Material_SetVector2(&intro_data.material, "uResolution",  g_Context.Size.Width, g_Context.Size.Height);
   Material_SetVector2(&intro_data.material, "uBaseResolution", g_Context.BaseSize.Width, g_Context.BaseSize.Height);
 
-  glBindVertexArray(intro_data.mesh);
+  glBindVertexArray(intro_data.mesh.VAO);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
   intro_state.curveValue += g_DeltaTime;
@@ -100,6 +100,7 @@ void Scenes_Intro_OnUpdate() {
 }
 
 void Scenes_Intro_OnDestroy() {
+  Drawable_Destroy(&intro_data.mesh);
   Material_UnloadProgram(&intro_data.material);
   printf("Intro destroyed!\n");
 }

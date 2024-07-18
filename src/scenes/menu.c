@@ -142,5 +142,6 @@ void Scenes_Menu_OnUpdate() {
 }
 
 void Scenes_Menu_OnDestroy() {
+  Sprite_DestroySpriteMesh();
   printf("Menu destroyed!\n");
 }

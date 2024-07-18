@@ -20,7 +20,10 @@ typedef struct Sprite_s {
 } Sprite;
 
 void Sprite_InitSpriteMesh(void);
+void Sprite_DestroySpriteMesh(void);
+
 Sprite Sprite_Create(Material* material);
+void Sprite_Destroy(Sprite* this);
 void Sprite_Render(Sprite* this, bool forceMaterialUpdate);
 
 void Sprite_SetName(Sprite* this, const char* name);

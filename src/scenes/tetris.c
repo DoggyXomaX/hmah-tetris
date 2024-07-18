@@ -184,6 +184,8 @@ void Scenes_Tetris_OnLoad() {
     Sprite_SetPivot(&tetris_data.nextFigureSprites[i], 0, 0);
   }
 
+  Sprite_InitSpriteMesh();
+
   // Prepare scene
 
   srand(time(NULL));
@@ -426,5 +428,6 @@ void Scenes_Tetris_OnUpdate() {
 }
 
 void Scenes_Tetris_OnDestroy() {
+  Sprite_DestroySpriteMesh();
   printf("Tetris scene destroyed!\n");
 }

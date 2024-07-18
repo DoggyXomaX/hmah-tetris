@@ -30,3 +30,18 @@ Drawable Drawable_Create(
 
   return d;
 }
+
+void Drawable_Destroy(Drawable* this) {
+  if (this == NULL) return;
+
+  glDeleteBuffers(1, &this->VBOPoints);
+  glDeleteBuffers(1, &this->VBOTexCoords);
+  glDeleteBuffers(1, &this->EBO);
+
+  glDeleteVertexArrays(1, &this->VAO);
+
+  this->VBOPoints = 0;
+  this->VBOTexCoords = 0;
+  this->EBO = 0;
+  this->VAO = 0;
+}

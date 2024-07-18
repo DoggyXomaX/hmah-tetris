@@ -1,19 +1,27 @@
 #include "sprite.h"
 
-static bool g_IsMeshInitialized = false;
-static GLuint g_MeshVAO;
-static GLuint g_LastUsedProgram;
+static bool g_isMeshInitialized = false;
+static Drawable g_drawable;
+static GLuint g_lastUsedProgram;
 
 void Sprite_InitSpriteMesh() {
-  if (g_IsMeshInitialized) return;
+  if (g_isMeshInitialized) return;
 
-  g_IsMeshInitialized = true;
+  g_isMeshInitialized = true;
 
-  g_MeshVAO = Drawable_Create(
+  g_drawable = Drawable_Create(
     (const GLfloat[]){ 0, 0, 1, 0, 1, 1, 0, 1 }, 4,
     (const GLfloat[]){ 0, 0, 1, 0, 1, 1, 0, 1 }, 4,
     (const GLuint[]){ 0, 1, 2, 2, 3, 0 }, 6
-  ).VAO;
+  );
+}
+
+void Sprite_DestroySpriteMesh() {
+  if (!g_isMeshInitialized) return;
+
+  g_isMeshInitialized = false;
+
+  Drawable_Destroy(&g_drawable);
 }
 
 Sprite Sprite_Create(Material* material) {
@@ -26,8 +34,12 @@ Sprite Sprite_Create(Material* material) {
   return sprite;
 }
 
+void Sprite_Destroy(Sprite* this) {
+  if (this == NULL) return;
+}
+
 void Sprite_Render(Sprite* this, bool forceMaterialUpdate) {
-  if (forceMaterialUpdate || this->Material->Program != g_LastUsedProgram) {
+  if (forceMaterialUpdate || this->Material->Program != g_lastUsedProgram) {
     Material_SetActive(this->Material);
     Material_BindTextures(this->Material);
   }
@@ -43,7 +55,7 @@ void Sprite_Render(Sprite* this, bool forceMaterialUpdate) {
   Material_SetFloat(this->Material, "uRotation", node->Transform.Rotation);
   Material_SetFloat(this->Material, "uScale", node->Transform.Scale);
 
-  glBindVertexArray(g_MeshVAO);
+  glBindVertexArray(g_drawable.VAO);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
