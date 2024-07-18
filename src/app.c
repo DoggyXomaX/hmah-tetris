@@ -59,11 +59,6 @@ void UpdateSDLEvents() {
   }
 }
 
-void Update() {
-  UpdateSDLEvents();
-  Scenes_OnUpdate();
-}
-
 int App_Init(int argc, char* argv[]) {
   UNUSED(argc);
   UNUSED(argv);
@@ -83,7 +78,10 @@ int App_Init(int argc, char* argv[]) {
 
   while (g_IsRunning) {
     g_Time = SDL_GetTicks() / 1000.0f;
-    Update();
+    
+    UpdateSDLEvents();
+    Scenes_OnUpdate();
+
     usleep(1000.0f / g_TargetFPS);
   }
 
