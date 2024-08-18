@@ -58,25 +58,13 @@ Figure Figure_Create_Tetris() {
 void Figure_ApplyNewMatrix(Figure* this, const Field* field, uint8_t newMat[16]) {
   int minX = 0;
   int maxX = field->Size.Width - 1;
-
   for (int y = 0, i = 0; y < this->Size; y++) {
     for (int x = 0; x < this->Size; x++, i++) {
-      // Do not check empty cell btw
-      if (newMat[i] == 0) continue;
-
-      int fx = this->Position.X + x;
-      int fy = this->Position.Y + y;
-      int fi = fy * field->Size.Width + fx;
-
-      minX = fx < minX ? fx : minX;
-      maxX = fx > maxX ? fx : maxX;
-
-      bool inX = 0 <= fx && fx < field->Size.Width;
-      bool inY = 0 <= fy && fy < field->Size.Height;
-      bool isBelowField = fy >= field->Size.Height;
-      bool isTouchFieldCell = inX && inY && field->Data[fi] != 0;
-
-      if (isBelowField || isTouchFieldCell) return;
+      if (newMat[i] != 0) {
+        const int fx = this->Position.X + x;
+        minX = fx < minX ? fx : minX;
+        maxX = fx > maxX ? fx : maxX;
+      }
     }
   }
 
