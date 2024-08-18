@@ -6,6 +6,18 @@ Another attempt to write something working in C and OpenGL.
 
 This time we are writing tetris :)
 
+## Downloads
+
+* [v1.0.0](https://github.com/DoggyXomaX/hmah-tetris/releases/tag/v1.0.0)
+
+## Screenshots
+
+![screenshot0](./.assets/screenshot0.png)
+
+![screenshot1](./.assets/screenshot1.png)
+
+![screenshot2](./.assets/screenshot2.png)
+
 ## Build dependencies
 
 * To compile C btw
