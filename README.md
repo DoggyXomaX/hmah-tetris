@@ -28,7 +28,7 @@ cmake --build .
 ## Running
 
 ```shell
-# In build folder
+# In build directory
 ./tetris.bin
 ```
 
