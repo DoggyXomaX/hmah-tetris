@@ -1,4 +1,4 @@
-#include "tetris.h"
+#include "scenes/tetris.h"
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -9,7 +9,6 @@
 #include "timing.h"
 #include "texture.h"
 #include "material.h"
-#include "node.h"
 #include "sprite.h"
 #include "field.h"
 #include "figure.h"

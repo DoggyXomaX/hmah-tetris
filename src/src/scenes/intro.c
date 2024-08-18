@@ -1,4 +1,4 @@
-#include "intro.h"
+#include "scenes/intro.h"
 
 #include <GL/gl3w.h>
 #include <stdio.h>
@@ -7,7 +7,6 @@
 #include "material.h"
 #include "context.h"
 #include "drawable.h"
-#include "sprite.h"
 #include "curve.h"
 #include "input.h"
 #include "scene.h"

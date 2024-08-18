@@ -1,8 +1,11 @@
 objects
 bin
-src/shaders/compiled
+src/shaders/include/compiled
 .vscode
 .idea
+
+build
+cmake-build-debug
 
 # stb_image
 deps/stb_image

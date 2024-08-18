@@ -4,7 +4,6 @@
 #include <inttypes.h>
 #include <memory.h>
 #include <stdlib.h>
-#include <time.h>
 
 const uint8_t figureBox[] = { 1, 1, 1, 1 };
 const uint8_t figureSLeft[] = { 0, 1, 0, 1, 1, 0, 1, 0, 0 };

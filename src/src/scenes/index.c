@@ -1,9 +1,10 @@
-#include "index.h"
+#include "scenes/index.h"
+
+#include "scenes/intro.h"
+#include "scenes/menu.h"
+#include "scenes/tetris.h"
 
 #include "scene.h"
-#include "intro.h"
-#include "menu.h"
-#include "tetris.h"
 
 void Scenes_CreateAll() {
   Scene_Create("Intro", &Scenes_Intro_OnLoad, &Scenes_Intro_OnUpdate, &Scenes_Intro_OnDestroy);

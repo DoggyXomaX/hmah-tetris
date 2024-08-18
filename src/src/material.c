@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-void Material_ErrPrefix(Material* this) {
+void Material_ErrPrefix(const Material* this) {
   fprintf(stderr, "Material[%s]: ", this->Name);
 }
 

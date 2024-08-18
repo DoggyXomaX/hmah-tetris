@@ -1,5 +1,7 @@
 #include "cursor.h"
 
+#include <SDL3/SDL.h>
+
 SDL_Cursor* g_CT_cursors[2];
 
 void Cursor_Init() {

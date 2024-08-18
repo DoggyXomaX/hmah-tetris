@@ -1,7 +1,5 @@
 #include "app.h"
 
-#include <inttypes.h>
-#include <stddef.h>
 #include <SDL3/SDL.h>
 #include <unistd.h>
 

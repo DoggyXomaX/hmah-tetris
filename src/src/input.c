@@ -1,7 +1,5 @@
 #include "input.h"
 
-#include <stdio.h>
-
 #include "vector.h"
 #include "context.h"
 

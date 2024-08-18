@@ -1,7 +1,6 @@
 #include "texture.h"
 
 #include <stdio.h>
-#include <inttypes.h>
 #include <assert.h>
 
 #define STB_IMAGE_IMPLEMENTATION

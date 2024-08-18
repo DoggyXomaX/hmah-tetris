@@ -1,4 +1,4 @@
-#include "menu.h"
+#include "scenes/menu.h"
 
 #include <stdio.h>
 #include <GL/gl3w.h>
