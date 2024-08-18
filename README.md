@@ -23,19 +23,26 @@ This time we are writing tetris :)
 
 * To compile C btw
   
-  ![GCC / CLang](https://img.shields.io/badge/GCC_%2F_CLang-blue?logo=gnu&style=for-the-badge)
+  ![GCC / CLang / MSVC](https://img.shields.io/badge/GCC_%2F_CLang_%2F_MSVC-blue?style=for-the-badge)
 
 * To make dependencies
   
   ![CMake ^3.18.0](https://img.shields.io/badge/CMake-%5E3.18.0-green?logo=cmake&style=for-the-badge)
 
-## Build
+## Linux build
 
 ```shell
 mkdir build
 cd build
-cmake -S .. -B .
-cmake --build .
+cmake .. && cmake --build .
+```
+
+## Windows build
+```shell
+mkdir build
+cd build
+cmake ..
+cmake --build . --config Release
 ```
 
 ## Running
