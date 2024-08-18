@@ -8,6 +8,7 @@ This time we are writing tetris :)
 
 ## Downloads
 
+* [v1.1.0](https://github.com/DoggyXomaX/hmah-tetris/releases/tag/v1.1.0)
 * [v1.0.0](https://github.com/DoggyXomaX/hmah-tetris/releases/tag/v1.0.0)
 
 ## Screenshots
