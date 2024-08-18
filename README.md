@@ -29,7 +29,7 @@ cmake --build .
 
 ```shell
 # In build directory
-./tetris.bin
+./tetris
 ```
 
 ## Dependencies

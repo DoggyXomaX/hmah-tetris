@@ -109,11 +109,11 @@ bool isAllowedButton(int button) {
   return MB_LEFT <= button && button <= MB_RIGHT;
 }
 
-void Input_SetMousePressed(enum MouseButton button, bool value) {
+void Input_SetMousePressed(int button, bool value) {
   if (isAllowedButton(button)) g_MousePresses[button] = value;
 }
 
-bool Input_IsMousePressed(enum MouseButton button) {
+bool Input_IsMousePressed(int button) {
   return isAllowedButton(button) && g_MousePresses[button];
 }
 
@@ -126,22 +126,22 @@ void Input_ResetMouseTriggers() {
   }
 }
 
-void Input_SetMouseDown(enum MouseButton button) {
+void Input_SetMouseDown(int button) {
   if (isAllowedButton(button) && !g_MousePresses[button]) {
     g_MouseDown[button] = true; 
   }
 }
 
-void Input_SetMouseUp(enum MouseButton button) {
+void Input_SetMouseUp(int button) {
   if (isAllowedButton(button) && g_MousePresses[button]) {
     g_MouseUp[button] = true;
   }
 }
 
-bool Input_OnMouseDown(enum MouseButton button) {
+bool Input_OnMouseDown(int button) {
   return isAllowedButton(button) && g_MouseDown[button];
 }
 
-bool Input_OnMouseUp(enum MouseButton button) {
+bool Input_OnMouseUp(int button) {
   return isAllowedButton(button) && g_MouseUp[button];
 }

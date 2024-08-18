@@ -1,15 +1,13 @@
-#ifndef __INPUT_H__
-#define __INPUT_H__
+#ifndef __HMAH_INPUT_H__
+#define __HMAH_INPUT_H__
 
 #include <stdbool.h>
 #include <inttypes.h>
 #include "vector.h"
 
-enum MouseButton {
-  MB_LEFT,
-  MB_MIDDLE,
-  MB_RIGHT,
-};
+#define MB_LEFT 0
+#define MB_MIDDLE 1
+#define MB_RIGHT 2
 
 // Manage
 
@@ -23,11 +21,11 @@ void Input_SetKeyUp(uint32_t key);
 
 void Input_SetMousePosition(float x, float y);
 
-void Input_SetMousePressed(enum MouseButton button, bool value);
+void Input_SetMousePressed(int button, bool value);
 
 void Input_ResetMouseTriggers(void);
-void Input_SetMouseDown(enum MouseButton button);
-void Input_SetMouseUp(enum MouseButton button);
+void Input_SetMouseDown(int button);
+void Input_SetMouseUp(int button);
 
 // Usage
 
@@ -38,9 +36,9 @@ bool Input_OnKeyUp(uint32_t key);
 Vector2f Input_GetMousePosition(void);
 Vector2f Input_GetBaseMousePosition(void);
 
-bool Input_IsMousePressed(enum MouseButton button);
+bool Input_IsMousePressed(int button);
 
-bool Input_OnMouseDown(enum MouseButton button);
-bool Input_OnMouseUp(enum MouseButton button);
+bool Input_OnMouseDown(int button);
+bool Input_OnMouseUp(int button);
 
-#endif // __INPUT_H__
+#endif // __HMAH_INPUT_H__

@@ -8,6 +8,7 @@ set(SOURCES
   deps/src/gl3w.c
 
   # Core
+  src/sleep.c
   src/app.c
   src/context.c
   src/cursor.c

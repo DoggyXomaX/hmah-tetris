@@ -1,8 +1,8 @@
 #include "app.h"
 
 #include <SDL3/SDL.h>
-#include <unistd.h>
 
+#include "sleep.h"
 #include "unused.h"
 #include "context.h"
 #include "input.h"
@@ -75,12 +75,12 @@ int App_Init(int argc, char* argv[]) {
   g_IsRunning = true;
 
   while (g_IsRunning) {
-    g_Time = SDL_GetTicks() / 1000.0f;
+    g_Time = (float)SDL_GetTicks() / 1000.0f;
     
     UpdateSDLEvents();
     Scenes_OnUpdate();
 
-    usleep(1000.0f / g_TargetFPS);
+    sleep_ms((int)(1000.0f / g_TargetFPS));
   }
 
   Scenes_Destroy();
