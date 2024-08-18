@@ -7,3 +7,6 @@
 [submodule "deps/SDL"]
 	path = deps/SDL
 	url = https://github.com/libsdl-org/SDL
+[submodule "tools/hmah-shader-to-header"]
+	path = tools/hmah-shader-to-header
+	url = https://github.com/DoggyXomaX/hmah-shader-to-header
