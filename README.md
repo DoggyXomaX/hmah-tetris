@@ -14,35 +14,22 @@ This time we are writing tetris :)
 
 * To make dependencies
   
-  ![CMake ^3.16.0](https://img.shields.io/badge/CMake-%5E3.16.0-green?logo=cmake&style=for-the-badge)
-
-* To download `stb_image.h`
-  
-  ![Curl](https://img.shields.io/badge/Curl-blue?logo=gnu&style=for-the-badge)
-
-* To build shaders
-  
-  ![Mono](https://img.shields.io/badge/Mono-blue?logo=dotnet&style=for-the-badge)
+  ![CMake ^3.18.0](https://img.shields.io/badge/CMake-%5E3.18.0-green?logo=cmake&style=for-the-badge)
 
 ## Build
 
-> Current version only supports posix OS (linux, freebsd, maybe MacOS)
-
 ```shell
-make deps # Build dependencies
-make # Build tetris
+mkdir build
+cd build
+cmake -S .. -B .
+cmake --build .
 ```
 
 ## Running
 
 ```shell
-make run
-```
-
-## Clean
-
-```shell
-make clean
+# In build folder
+./tetris.bin
 ```
 
 ## Dependencies
