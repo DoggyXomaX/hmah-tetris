@@ -80,9 +80,30 @@ void Figure_ApplyNewMatrix(Figure* this, const Field* field, uint8_t newMat[16])
     }
   }
 
-  this->Position.X -= minX;
-  this->Position.X -= maxX - (field->Size.Width - 1);
+  float newPositionX = this->Position.X;
+  newPositionX -= minX;
+  newPositionX -= maxX - (field->Size.Width - 1);
 
+  // Second check iteration after bounds offset
+  for (int y = 0, i = 0; y < this->Size; y++) {
+    for (int x = 0; x < this->Size; x++, i++) {
+      // Do not check empty cell btw
+      if (newMat[i] == 0) continue;
+
+      int fx = newPositionX + x;
+      int fy = this->Position.Y + y;
+      int fi = fy * field->Size.Width + fx;
+
+      bool inX = 0 <= fx && fx < field->Size.Width;
+      bool inY = 0 <= fy && fy < field->Size.Height;
+      bool isBelowField = fy >= field->Size.Height;
+      bool isTouchFieldCell = inX && inY && field->Data[fi] != 0;
+
+      if (isBelowField || isTouchFieldCell) return;
+    }
+  }
+
+  this->Position.X = newPositionX;
   memcpy(this->Data, newMat, this->Size * this->Size);
 }
 
