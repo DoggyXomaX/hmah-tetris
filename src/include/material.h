@@ -43,4 +43,7 @@ void Material_SetVector4(Material* this, const char* name,
   GLfloat value1, GLfloat value2, GLfloat value3, GLfloat value4
 );
 
+void Material_SetUint(Material* this, const char* name, GLuint value1);
+void Material_SetUVector2(Material* this, const char* name, GLuint value1, GLuint value2);
+
 #endif // __MATERIAL_H__

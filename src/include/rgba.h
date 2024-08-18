@@ -8,4 +8,6 @@ typedef struct RGBA_s {
   float A;
 } RGBA;
 
+RGBA RGBA_Invert(const RGBA* this);
+
 #endif // __RGBA_H__

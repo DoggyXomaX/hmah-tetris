@@ -1,7 +1,6 @@
 #include "material.h"
 
 #include <stdio.h>
-#include <assert.h>
 
 void Material_ErrPrefix(const Material* this) {
   fprintf(stderr, "Material[%s]: ", this->Name);
@@ -151,4 +150,14 @@ void Material_SetVector4(Material* this, const char* name,
 ) {
   GLint location = Material_GetParamLocation(this, name);
   if (location != -1) glUniform4f(location, value1, value2, value3, value4);
+}
+
+void Material_SetUint(Material* this, const char* name, const GLuint value1) {
+  const GLuint location = Material_GetParamLocation(this, name);
+  if (location != -1) glUniform1ui(location, value1);
+}
+
+void Material_SetUVector2(Material* this, const char* name, const GLuint value1, const GLuint value2) {
+  const GLuint location = Material_GetParamLocation(this, name);
+  if (location != -1) glUniform2ui(location, value1, value2);
 }

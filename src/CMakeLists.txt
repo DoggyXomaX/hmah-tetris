@@ -19,8 +19,10 @@ set(SOURCES
   src/input.c
   src/material.c
   src/node.c
+  src/rgba.c
   src/scene.c
   src/sprite.c
+  src/text.c
   src/texture.c
   src/timing.c
   src/transform.c
@@ -28,6 +30,7 @@ set(SOURCES
   # Shaders
   src/shaders/basic.c
   src/shaders/image.c
+  src/shaders/textsh.c
 
   # Scenes
   src/scenes/index.c
@@ -39,6 +42,7 @@ set(SOURCES
 add_executable(${TETRIS_TARGET} ${SOURCES})
 
 target_include_directories(${TETRIS_TARGET} PRIVATE include)
+target_include_directories(${TETRIS_TARGET} PRIVATE include/shaders)
 target_include_directories(${TETRIS_TARGET} PRIVATE deps/include)
 
 # Add CPM

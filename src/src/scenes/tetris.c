@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <stdlib.h>
+#include <text.h>
 #include <time.h>
 
 #include "timing.h"
@@ -217,6 +218,12 @@ void Scenes_Tetris_OnLoad() {
 
   tetris_state.isInitialized = true;
 
+  Text_Init();
+
+  // Enable transparency
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   printf("Tetris scene loaded!\n");
 }
 
@@ -306,20 +313,26 @@ void Scenes_Tetris_OnTetrisUpdate() {
   if (tetris_state.tetrisEndTime > g_Time) return;
   tetris_state.tetrisEndTime = g_Time + tetris_state.tetrisInterval;
 
+  int tetrisCount = 0;
+  for (int i = 0; i < 4; i++) {
+    if (tetris_state.disappearLinePositions[i] != -1) {
+      tetrisCount++;
+    }
+  }
+
   for (int i = 0; i < 4; i++) {
     int y = tetris_state.disappearLinePositions[i];
     if (y != -1) {
       tetris_state.field.Data[y * tetris_state.field.Size.Width + tetris_state.disappearX] = 0;
-      tetris_state.score++;
+      tetris_state.score += tetrisCount;
     }
   }
 
   tetris_state.disappearX++;
 
-  if (tetris_state.disappearX >= (int)tetris_state.field.Size.Width) {
+  if (tetris_state.disappearX >= tetris_state.field.Size.Width) {
     Field_CollectEmptyLines(&tetris_state.field);
     tetris_state.isTetris = false;
-    printf("Score: %d\n", tetris_state.score);
   }
 }
 
@@ -406,8 +419,41 @@ void Scenes_Tetris_Render() {
     }
   }
 
+  // Pause sprite render
+
   if (tetris_state.isPaused) {
     Sprite_Render(&tetris_data.pauseSprite, false);
+  }
+
+  RGBA mainColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+  RGBA invertMainColor = RGBA_Invert(&mainColor);
+  RGBA secondaryColor = { 0.2f, 0.2f, 0.2f, 0.2f };
+  RGBA invertSecondaryColor = RGBA_Invert(&secondaryColor);
+
+  if (tetris_state.isLost) {
+    mainColor = RGBA_Invert(&mainColor);
+    invertMainColor = RGBA_Invert(&invertMainColor);
+    secondaryColor = RGBA_Invert(&secondaryColor);
+    invertSecondaryColor = RGBA_Invert(&invertSecondaryColor);
+  }
+
+  // Next block text render
+  const char nextBlockText[] = "Next block";
+  Text_PutString(610, 53, 80, 16, nextBlockText, sizeof(nextBlockText) - 1, &mainColor);
+
+  // Score text render
+  const char scoreText[] = "Score";
+  Text_PutString(608, 271, 40, 16, scoreText, sizeof(scoreText) - 1, &mainColor);
+
+  // Score render
+  const int w = 16 / 2;
+  const int h = 16;
+
+  int score = tetris_state.score;
+  for (int i = 5; i >= 0; i--) {
+    const uint8_t num = score % 10;
+    score /= 10;
+    Text_PutChar(604 + i * w, 292, w, h, '0' + num, &invertMainColor);
   }
 }
 
@@ -428,5 +474,8 @@ void Scenes_Tetris_OnUpdate() {
 
 void Scenes_Tetris_OnDestroy() {
   Sprite_DestroySpriteMesh();
+
+  Text_Destroy();
+
   printf("Tetris scene destroyed!\n");
 }
